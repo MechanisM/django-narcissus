@@ -1,6 +1,3 @@
-from narcissus.models import UpdatePetal, ArticlePetal
-
-
 class BaseFlower(object):
     """
     A Flower is a content type, and each entry in the content type is called a
@@ -45,27 +42,3 @@ class BaseFlower(object):
         content when it is displayed in the Garden.  HTML can be used.
         """
         return None
-
-
-class UpdateFlower(BaseFlower):
-    
-    name = 'update'
-    long_name = 'status update'
-    edit_template = 'narcissus/petals/status-update.html'
-    petal = UpdatePetal
-    
-    def get_title(self):
-        return str(self.instance)
-
-
-class ArticleFlower(BaseFlower):
-    
-    name = 'article'
-    edit_template = 'narcissus/petals/article.html'
-    petal = ArticlePetal
-    
-    def get_title(self):
-        return self.instance.title
-    
-    def get_teaser(self):
-        return self.instance.get_teaser(truncate=30)
