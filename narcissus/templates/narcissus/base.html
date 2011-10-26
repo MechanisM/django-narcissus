@@ -31,7 +31,7 @@
           <a class="brand" href="#">Narcissus</a>
           <ul class="nav">
             <li class="active"><a href="#">Garden</a></li>
-            {% for flower in flowers %}
+            {% for flower in flowers.values %}
               <li><a href="#{{ flower.name }}">{{ flower.get_plural_name.title }}</a></li>
             {% endfor %}
           </ul>
@@ -64,7 +64,7 @@
       </div>
       
       <ul class="tabs" data-tabs="tabs">
-        {% for flower in flowers %}
+        {% for flower in flowers.values %}
           <li{% if forloop.first %} class="active"{% endif %}>
             <a href="#{{ flower.name }}">{{ flower.name.title }}</a>
           </li>
@@ -72,7 +72,7 @@
       </ul>
 
       <div class="tab-content">
-        {% for flower in flowers %}
+        {% for flower in flowers.values %}
           <div id="{{ flower.name }}"{% if forloop.first %} class="active"{% endif %}>
             {% include flower.edit_template %}
           </div>

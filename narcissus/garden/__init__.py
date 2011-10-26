@@ -22,8 +22,9 @@ def _get_flowers():
                 flower = getattr(mod, attr)
             except AttributeError:
                 raise ImproperlyConfigured('Module "%s" does not define a "%s" flower class' % (module, attr))
-            flowers.append(flower)
-        _narcissus_flowers = flowers
+            flowers.append((flower.petal, flower))
+        _narcissus_flowers = dict(flowers)
     return _narcissus_flowers
+
 
 flowers = _get_flowers()

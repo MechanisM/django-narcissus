@@ -1,3 +1,6 @@
+from narcissus.models import UpdatePetal, ArticlePetal
+
+
 class BaseFlower(object):
     """
     A Flower is a content type, and each entry in the content type is called a
@@ -15,20 +18,28 @@ class BaseFlower(object):
     # The template used when displaying a petal in the Garden.
     view_template = 'narcissus/petals/view.html'
     
-    def get_plural_name(self):
-        return self.plural_name or self.name + 's'
+    petal = None  # The petal model used by the Flower.
     
-    def get_long_name(self):
-        return self.long_name or self.name
+    def __init__(self, instance=None):
+        # A petal instance, used when displaying a petal in the Garden.
+        self.instance = instance
     
-    def get_title(self, instance):
+    @classmethod
+    def get_plural_name(cls):
+        return cls.plural_name or cls.name + 's'
+    
+    @classmethod
+    def get_long_name(cls):
+        return cls.long_name or cls.name
+    
+    def get_title(self):
         """
         Gets the title that is used as the header for the content when it is
         displayed in the Garden.  Required.
         """
         raise NotImplementedError()
     
-    def get_teaser(self, instance):
+    def get_teaser(self):
         """
         Gets the small block of text that is displayed under the header for the
         content when it is displayed in the Garden.  HTML can be used.
@@ -41,18 +52,20 @@ class UpdateFlower(BaseFlower):
     name = 'update'
     long_name = 'status update'
     edit_template = 'narcissus/petals/status-update.html'
+    petal = UpdatePetal
     
-    def get_title(self, instance):
-        return str(instance)
+    def get_title(self):
+        return str(self.instance)
 
 
 class ArticleFlower(BaseFlower):
     
     name = 'article'
     edit_template = 'narcissus/petals/article.html'
+    petal = ArticlePetal
     
-    def get_title(self, instance):
-        return instance.title
+    def get_title(self):
+        return self.instance.title
     
-    def get_teaser(self, instance):
-        return instance.get_teaser(truncate=30)
+    def get_teaser(self):
+        return self.instance.get_teaser(truncate=30)
