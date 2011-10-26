@@ -1,5 +1,6 @@
 from django.views.generic import TemplateView
 
+from narcissus.garden import flowers
 from narcissus.settings import STATIC_URL
 
 
@@ -11,5 +12,6 @@ class HomeView(TemplateView):
         context.update({
             'NARCISSUS_STATIC_URL': STATIC_URL,
             'user': self.request.user,
+            'flowers': flowers,
         })
         return context

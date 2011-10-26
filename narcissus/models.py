@@ -90,12 +90,16 @@ class ArticlePetal(Petal):
         return formatter(self.content, filter_name=self.markup)
 
     @property
-    def teaser(self):
-        if self.description:
-            return formatter(self.description, filter_name=self.markup)
-        else:
-            return truncate_html_words(self.rendered_content, 75)
-
-    @property
     def word_count(self):
         return len(strip_tags(self.rendered_content))
+
+    def get_teaser(self, truncate=75):
+        if self.description:
+            teaser = formatter(self.description, filter_name=self.markup)
+        else:
+            teaser = self.rendered_content
+
+        if truncate:
+            return truncate_html_words(teaser, truncate)
+        else:
+            return teaser

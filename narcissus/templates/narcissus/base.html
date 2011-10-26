@@ -31,8 +31,9 @@
           <a class="brand" href="#">Narcissus</a>
           <ul class="nav">
             <li class="active"><a href="#">Garden</a></li>
-            <li><a href="#update">Updates</a></li>
-            <li><a href="#article">Articles</a></li>
+            {% for flower in flowers %}
+              <li><a href="#{{ flower.name }}">{{ flower.get_plural_name.title }}</a></li>
+            {% endfor %}
           </ul>
           <p class="pull-right">
             {% if user.is_authenticated %}
@@ -52,7 +53,7 @@
       
       <div class="alert-message block-message info fade in" data-alert="alert">
         <a class="close" href="#">×</a>
-        <p><strong>Welcome to the garden!</strong> This is where you can go to post new content on your site.  It also collects all of your recent posts in one place for easy editing.  To view and edit only posts from a specific content type, click one of the links along the top of the page.</p>
+        <p><strong>Welcome to the Garden!</strong> This is where you can go to post new content on your site.  It also collects all of your recent posts in one place for easy editing.  To view and edit only posts from a specific content type, click one of the links along the top of the page.</p>
       </div>
       
       <div class="page-header">
@@ -63,17 +64,19 @@
       </div>
       
       <ul class="tabs" data-tabs="tabs">
-        <li class="active"><a href="#update">Update</a></li>
-        <li><a href="#article">Article</a></li>
+        {% for flower in flowers %}
+          <li{% if forloop.first %} class="active"{% endif %}>
+            <a href="#{{ flower.name }}">{{ flower.name.title }}</a>
+          </li>
+        {% endfor %}
       </ul>
 
       <div class="tab-content">
-        <div id="update" class="active">
-          {% include "narcissus/petals/status-update.html" %}
-        </div>
-        <div id="article">
-          {% include "narcissus/petals/article.html" %}
-        </div>
+        {% for flower in flowers %}
+          <div id="{{ flower.name }}"{% if forloop.first %} class="active"{% endif %}>
+            {% include flower.edit_template %}
+          </div>
+        {% endfor %}
       </div>
       
       <div class="page-header">
