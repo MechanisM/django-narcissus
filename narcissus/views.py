@@ -10,5 +10,6 @@ class HomeView(TemplateView):
         context = super(HomeView, self).get_context_data(**kwargs)
         context.update({
             'NARCISSUS_STATIC_URL': STATIC_URL,
+            'user': self.request.user,
         })
         return context

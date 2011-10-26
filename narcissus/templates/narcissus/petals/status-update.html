@@ -1,0 +1,24 @@
+{% extends "narcissus/petals/base.html" %}
+
+{% block content_title %}Status Update{% endblock %}
+
+{% block content_fields %}
+  <fieldset>
+    <legend>What are you up to?</legend>
+    <div class="clearfix">
+      <div class="input">
+        <textarea class="span10" id="status-update" name="status-update" rows="3"></textarea>
+      </div>
+    </div><!-- /clearfix -->
+  </fieldset>
+
+  <div class="submit clearfix">
+    <p class="pull-right">
+      <strong><a rel='twipsy' title='Remaining characters' id="status-count">300</a></strong>
+    </p>
+  </div><!-- /clearfix -->
+{% endblock %}
+
+{% block content-js %}
+  <script src="{{ NARCISSUS_STATIC_URL }}js/status-update.js" type="text/javascript"></script>
+{% endblock %}

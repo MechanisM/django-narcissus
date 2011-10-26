@@ -1,0 +1,45 @@
+{% extends "narcissus/petals/base.html" %}
+
+{% block content_title %}Article{% endblock %}
+
+{% block content_fields %}      
+  <div class="clearfix">
+    <label for="article-title">Title</label>
+    <div class="input">
+      <input class="span10" id="article-title" name="article-title" type="text" />
+    </div>
+  </div>
+
+  <div class="clearfix">
+    <label for="article-content">Content</label>
+    <div class="input">
+      <textarea class="span10" name="article-content" id="article-content" rows="15"></textarea>
+    </div>
+  </div>
+  
+  <p><a href="#" id="article-show-description">Add a description?</a></p>
+  
+  <div class="clearfix" id="article-description-input">
+    <label for="article-description">Description</label>
+    <div class="input">
+      <textarea class="span10" name="article-description" id="article-description" rows="10"></textarea>
+    </div>
+  </div>
+{% endblock %}
+
+{% block extra_details %}
+  <div class="clearfix">
+    <label for="article-markup-select">Markup</label>
+    <div class="input">
+      <select name="markup-select" id="article-markup-select">
+        <option>Textile</option>
+        <option>Markdown</option>
+        <option>reStructuredText</option>
+      </select>
+    </div>
+  </div>
+{% endblock %}
+
+{% block content-js %}
+  <script src="{{ NARCISSUS_STATIC_URL }}js/article.js" type="text/javascript"></script>
+{% endblock %}

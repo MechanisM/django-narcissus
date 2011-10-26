@@ -1,0 +1,117 @@
+<h2>{% block content_title %}{% endblock %}</h2>
+
+<form class="form-stacked">
+  
+  <div class="row">
+  
+    <div class="span-two-thirds">
+      <div class="well">
+        {% block content_fields %}{% endblock %}
+      </div>
+    
+      <fieldset class="outside-well">
+
+        <div class="clearfix">
+          <label for="update-slug">URL</label>
+          <div class="input-prepend">
+            <span class="add-on">/update/2011/10/25/</span>
+            <input class="span7" name="update-slug" id="update-slug" type="text" />
+          </div>
+        </div>
+      
+        <div class="clearfix">
+          <label for="update-tags">Tags</label>
+          <div class="input">
+            <input class="span10" name="update-tags" id="update-tags" type="text" />
+          </div>
+        </div>
+    
+      </fieldset>
+    </div><!-- /span-two-thirds -->
+
+    <div class="span-one-third">
+      
+      <fieldset>
+        <legend>Details</legend>
+
+        <div class="clearfix">
+          <label for="status-select">Status</label>
+          <div class="input">
+            <select name="status-select" id="status-select">
+              <option>Draft</option>
+              <option>Live</option>
+              <option>Closed</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="clearfix">
+          <label for="category-select">Category</label>
+          <div class="input">
+            <select name="cateogry-select" id="category-select">
+              <option>Family</option>
+              <option>Technology</option>
+              <option>Movies</option>
+              <option>Music</option>
+              <option>Comics</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="clearfix">
+          <label for="language-select">Language</label>
+          <div class="input">
+            <select name="language-select" id="language-select">
+              <option>English</option>
+              <option>Deutsch</option>
+              <option>Fran&ccedil;ais</option>
+            </select>
+          </div>
+        </div>
+        
+        {% block extra_details %}{% endblock %}
+
+      </fieldset>
+
+      <fieldset>
+        <legend>Share this update?</legend>
+        <div class="clearfix">
+          <div class="input">
+            <ul class="inputs-list">
+              <li>
+                <label>
+                  <input type="checkbox" name="share-with" value="twitter">
+                  <span>Twitter</span>
+                </label>
+              </li>
+              <li>
+                <label>
+                  <input type="checkbox" name="share-with" value="facebook">
+                  <span>Facebook</span>
+                </label>
+              </li>
+              <li>
+                <label>
+                  <input type="checkbox" name="share-with" value="google">
+                  <span>Google+</span>
+                </label>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </fieldset>
+      
+    </div><!-- /span-one-third -->
+    
+  </div><!-- /row -->
+  
+  <div class="row actions" id="submit-post">
+    <p>
+      <button type="submit" class="btn large primary">Post</button>
+      <button type="reset" class="btn large">Cancel</button>
+    </p>
+  </div>
+  
+</form>
+
+{% block content-js %}{% endblock %}
