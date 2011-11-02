@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    {% load url from future %}
     <meta charset="utf-8">
     <title>Narcissus</title>
     <meta name="description" content="A dashboard for creating new petals for your lovely Narcissus garden.">
@@ -28,7 +29,7 @@
     <div class="topbar">
       <div class="topbar-inner">
         <div class="container">
-          <a class="brand" href="#">Narcissus</a>
+          <a class="brand" href="{% url 'narcissus-home' %}">Narcissus</a>
           <ul class="nav">
             <li class="active"><a href="#">Garden</a></li>
             {% for flower in flowers.values %}

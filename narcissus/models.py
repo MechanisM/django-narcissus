@@ -91,7 +91,7 @@ class ArticlePetal(Petal):
 
     @property
     def word_count(self):
-        return len(strip_tags(self.rendered_content))
+        return len(strip_tags(self.rendered_content).split())
 
     def get_teaser(self, truncate=75):
         if self.description:
