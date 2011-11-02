@@ -4,6 +4,11 @@ from narcissus.flowers.base import BaseFlower
 from narcissus.models import UpdatePetal
 
 
+class UpdateForm(ModelForm):
+    class Meta:
+        model = UpdatePetal
+
+
 class UpdateFlower(BaseFlower):
     
     name = 'update'
@@ -14,8 +19,3 @@ class UpdateFlower(BaseFlower):
     
     def get_title(self):
         return str(self.instance)
-
-
-class UpdateForm(ModelForm):
-    class Meta:
-        model = UpdatePetal

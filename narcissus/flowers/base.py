@@ -1,7 +1,9 @@
+from django.forms.models import modelform_factory
+
 class BaseFlower(object):
     """
     A Flower is a content type, and each entry in the content type is called a
-    petal.  Flower objects describe how the Garden (the user dashboard) handles
+    Petal.  Flower objects describe how the Garden (the user dashboard) handles
     a particular content type.
     """
     
@@ -16,6 +18,7 @@ class BaseFlower(object):
     view_template = 'narcissus/petals/view.html'
     
     petal = None  # The petal model used by the Flower.
+    form = None  # The form used for new {etals.
     
     def __init__(self, instance=None):
         # A petal instance, used when displaying a petal in the Garden.
@@ -28,6 +31,13 @@ class BaseFlower(object):
     @classmethod
     def get_long_name(cls):
         return cls.long_name or cls.name
+    
+    @classmethod
+    def get_form(cls):
+        if cls.form is None:
+            return modelform_factory(cls.petal)
+        else:
+            return cls.form
     
     def get_title(self):
         """
