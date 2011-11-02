@@ -1,4 +1,9 @@
-.. image:: http://upload.wikimedia.org/wikipedia/commons/thumb/2/28/Jonquil09.jpg/800px-Jonquil09.jpg
-   :width: 800px
-   :height: 534px
-   :alt: Narcissus
+.. image:: http://f.cl.ly/items/1R25330r3X042m1L1q3Y/status-update.png
+    :width: 800px
+    :height: 632px
+    :alt: Status Updated
+
+.. image:: http://f.cl.ly/items/2E0s3O3A2F1O1z0n2i1f/article.png
+    :width: 800px
+    :height: 632px
+    :alt: Articles
