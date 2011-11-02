@@ -17,9 +17,11 @@ class PetalModelTestCase(TestCase):
         self.assertEqual(str(update), "What I do, I do for the good of the ...")
 
     def test_article_petal(self):
-        content = "# War of the Green Lanterns\n\n"
-        content += "As _Sinestro_ fights _Krona_, a green power ring comes to "
-        content += "him, making _Sinestro_ a *Green Lantern* once more."
+        content = (
+            "# War of the Green Lanterns\n\n"
+            "As _Sinestro_ fights _Krona_, a green power ring comes to him, "
+            "making _Sinestro_ a **Green Lantern** once more."
+        )
 
         article = ArticlePetal(
             title="Sinestro wields green power ring once again",
@@ -27,10 +29,11 @@ class PetalModelTestCase(TestCase):
             markup="markdown"
         )
 
-        rendered = "<h1>War of the Green Lanterns</h1>\n<p>As <em>Sinestro</em>"
-        rendered += " fights <em>Krona</em>, a green power ring comes to him, "
-        rendered += "making <em>Sinestro</em> a <em>Green Lantern</em> once "
-        rendered += "more.</p>"
+        rendered = (
+            "<h1>War of the Green Lanterns</h1>\n<p>As <em>Sinestro</em> "
+            "fights <em>Krona</em>, a green power ring comes to him, making "
+            "<em>Sinestro</em> a <strong>Green Lantern</strong> once more.</p>"
+        )
 
         self.assertEqual(article.rendered_content, rendered)
         self.assertEqual(article.word_count, 23)
@@ -49,3 +52,7 @@ class GardenViewTestCase(TestCase):
         response = self.client.get(reverse('narcissus-home'))
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.context['flowers'], flowers)
+
+    def test_new_update(self):
+        """Test the creation of new updates using the Ajax interface."""
+        
