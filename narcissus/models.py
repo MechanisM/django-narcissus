@@ -53,7 +53,7 @@ class Petal(models.Model):
         choices=settings.LANGUAGES,
         default=settings.LANGUAGE_CODE,
     )
-    slug = models.SlugField(unique_for_date='created_date')
+    slug = models.SlugField('URL', unique_for_date='created_date')
     created_date = models.DateTimeField(auto_now_add=True)
     updated_date = models.DateTimeField(auto_now=True)
 
@@ -70,6 +70,10 @@ class UpdatePetal(Petal):
 
     message = models.CharField(max_length=300)
 
+    class Meta:
+        verbose_name = _(u'update')
+        verbose_name_plural = _(u'updates')
+
     def __unicode__(self):
         return truncate_words(self.message, 10)
 
@@ -81,6 +85,10 @@ class ArticlePetal(Petal):
     content = models.TextField()
     description = models.TextField(blank=True, null=True)
     markup = MarkupField()
+    
+    class Meta:
+        verbose_name = _(u'article')
+        verbose_name_plural = _(u'articles')
 
     def __unicode__(self):
         return self.title

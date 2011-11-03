@@ -32,8 +32,8 @@
           <a class="brand" href="{% url 'narcissus-home' %}">Narcissus</a>
           <ul class="nav">
             <li class="active"><a href="#">Garden</a></li>
-            {% for flower in flowers.values %}
-              <li><a href="#{{ flower.name }}">{{ flower.get_plural_name.title }}</a></li>
+            {% for name, flower in flowers.items %}
+              <li><a href="#{{ name }}">{{ flower.get_verbose_name_plural.title }}</a></li>
             {% endfor %}
           </ul>
           <p class="pull-right">
@@ -65,16 +65,16 @@
       </div>
       
       <ul class="tabs" data-tabs="tabs">
-        {% for flower in flowers.values %}
+        {% for name, flower in flowers.items %}
           <li{% if forloop.first %} class="active"{% endif %}>
-            <a href="#{{ flower.name }}">{{ flower.name.title }}</a>
+            <a href="#{{ name }}">{{ name.title }}</a>
           </li>
         {% endfor %}
       </ul>
 
       <div class="tab-content">
-        {% for flower in flowers.values %}
-          <div id="{{ flower.name }}"{% if forloop.first %} class="active"{% endif %}>
+        {% for name, flower in flowers.items %}
+          <div id="{{ name }}"{% if forloop.first %} class="active"{% endif %}>
             {% include flower.edit_template %}
           </div>
         {% endfor %}

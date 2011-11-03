@@ -1,13 +1,12 @@
 from django.core.urlresolvers import reverse
 from django.test import TestCase
+from django.utils import simplejson as json
 
 from narcissus.models import UpdatePetal, ArticlePetal
 
 
 class PetalModelTestCase(TestCase):
-    """
-    Test the petal models, which are the various built-in content types.
-    """
+    """Test the petal models, which are the various built-in content types."""
 
     def test_update_petal(self):
         update = UpdatePetal(
@@ -55,4 +54,11 @@ class GardenViewTestCase(TestCase):
 
     def test_new_update(self):
         """Test the creation of new updates using the Ajax interface."""
+        url = reverse('narcissus-new-petal', args=['update'])
+        response = self.client.post(url, {
+            'message': "I'm a little teapot.",
+        }, HTTP_X_REQUESTED_WITH='XMLHttpRequest')
+        self.assertEqual(response.status_code, 200)
         
+        data = json.loads(response.content)
+        self.assertEqual(data['success'], True)

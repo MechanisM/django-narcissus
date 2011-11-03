@@ -1,6 +1,9 @@
+{% load url from future %}
+
 <h2>{% block content_title %}{% endblock %}</h2>
 
-<form class="form-stacked">
+{% with flower.form_instance as form %}
+<form class="form-stacked" id="{{ name }}-form" method="post" action="{% url 'narcissus-new-petal' name %}">
   
   <div class="row">
   
@@ -12,17 +15,17 @@
       <fieldset class="outside-well">
 
         <div class="clearfix">
-          <label for="update-slug">URL</label>
+          {{ form.slug.label_tag }}
           <div class="input-prepend">
-            <span class="add-on">/update/2011/10/25/</span>
-            <input class="span7" name="update-slug" id="update-slug" type="text" />
+            <span class="add-on">/{{ name }}/2011/10/25/</span>
+            <input class="span7" name="{{ form.slug.name }}" id="{{ form.slug.auto_id }}" type="text" />
           </div>
         </div>
       
         <div class="clearfix">
-          <label for="update-tags">Tags</label>
+          {{ form.tags.label_tag }}
           <div class="input">
-            <input class="span10" name="update-tags" id="update-tags" type="text" />
+            <input class="span10" name="{{ form.tags.name }}" id="{{ form.tags.auto_id }}" type="text" />
           </div>
         </div>
     
@@ -34,38 +37,24 @@
       <fieldset>
         <legend>Details</legend>
 
-        <div class="clearfix">
-          <label for="status-select">Status</label>
+        <div class="clearfix">          
+          {{ form.status.label_tag }}
           <div class="input">
-            <select name="status-select" id="status-select">
-              <option>Draft</option>
-              <option>Live</option>
-              <option>Closed</option>
-            </select>
+            {{ form.status }}
           </div>
         </div>
 
         <div class="clearfix">
-          <label for="category-select">Category</label>
+          {{ form.category.label_tag }}
           <div class="input">
-            <select name="cateogry-select" id="category-select">
-              <option>Family</option>
-              <option>Technology</option>
-              <option>Movies</option>
-              <option>Music</option>
-              <option>Comics</option>
-            </select>
+            {{ form.category }}
           </div>
         </div>
 
         <div class="clearfix">
-          <label for="language-select">Language</label>
+          {{ form.language.label_tag }}
           <div class="input">
-            <select name="language-select" id="language-select">
-              <option>English</option>
-              <option>Deutsch</option>
-              <option>Fran&ccedil;ais</option>
-            </select>
+            {{ form.language }}
           </div>
         </div>
         
@@ -113,5 +102,6 @@
   </div>
   
 </form>
+{% endwith %}
 
 {% block content-js %}{% endblock %}

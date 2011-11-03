@@ -8,11 +8,10 @@ class JSONResponse(HttpResponse):
 
     def __init__(self, context='', success=True, exception=None):
         """Encode the content as JSON using the context and details provided"""
-        content_type = "application/json; charset=%s" % self._charset
+        content_type = "application/json; charset=%s" % settings.DEFAULT_CHARSET
         self.success = success
         self.exception = exception
-        super(JSONResponse, self).__init__(encode_context(context),
-                                           mimetype=None, status=status,
+        super(JSONResponse, self).__init__(self.encode_context(context),
                                            content_type=content_type)
 
     def encode_context(self, context):

@@ -5,14 +5,13 @@ from narcissus.models import UpdatePetal
 
 
 class UpdateForm(ModelForm):
+    
     class Meta:
         model = UpdatePetal
 
 
 class UpdateFlower(BaseFlower):
     
-    name = 'update'
-    long_name = 'status update'
     edit_template = 'narcissus/petals/update.html'
     petal = UpdatePetal
     form = UpdateForm

@@ -4,7 +4,6 @@ from narcissus.models import ArticlePetal
 
 class ArticleFlower(BaseFlower):
     
-    name = 'article'
     edit_template = 'narcissus/petals/article.html'
     petal = ArticlePetal
     

@@ -1,5 +1,6 @@
 from django.conf import settings
 from django.core.exceptions import ImproperlyConfigured
+from django.utils.datastructures import SortedDict
 from django.utils.importlib import import_module
 
 from narcissus.settings import FLOWERS
@@ -23,8 +24,10 @@ def _get_flowers():
                 flower = getattr(mod, attr)
             except AttributeError:
                 raise ImproperlyConfigured('Module "%s" does not define a "%s" flower class' % (module, attr))
-            flowers.append((flower.petal, flower))
-        _narcissus_flowers = dict(flowers)
+            # Structure it in a tuple that will be converted to a dict using
+            # the verbose names of the petals as keys.
+            flowers.append((flower.get_verbose_name(), flower))
+        _narcissus_flowers = SortedDict(flowers)
     return _narcissus_flowers
 
 

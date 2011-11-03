@@ -7,10 +7,6 @@ class BaseFlower(object):
     a particular content type.
     """
     
-    name = None  # The name of the content type the Flower represents.
-    plural_name = None  # An optional plural form of the name.
-    long_name = None  # An optional longer form of the name.
-    
     # The template used when adding or editing a petal.
     edit_template = 'narcissus/petals/edit.html'
     
@@ -25,15 +21,17 @@ class BaseFlower(object):
         self.instance = instance
     
     @classmethod
-    def get_plural_name(cls):
-        return cls.plural_name or cls.name + 's'
+    def get_verbose_name(cls):
+        """Convenience method to make it easy to retrieve the verbose name"""
+        return str(cls.petal._meta.verbose_name)
     
     @classmethod
-    def get_long_name(cls):
-        return cls.long_name or cls.name
+    def get_verbose_name_plural(cls):
+        """Convenience method to make it easy to retrieve the plural name"""
+        return str(cls.petal._meta.verbose_name_plural)
     
     @classmethod
-    def get_form(cls):
+    def get_form_class(cls):
         if cls.form is None:
             return modelform_factory(cls.petal)
         else:
