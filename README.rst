@@ -1,5 +1,5 @@
-Interface Prototypes
-====================
+Interface Examples
+==================
 
 Status Updates
 **************

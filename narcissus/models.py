@@ -24,12 +24,8 @@ class Category(models.Model):
         return self.title
 
 
-class Petal(models.Model):
-    """
-    A base model for the various content models to inherit from. The name of
-    the model participates in the floral theme, each update becoming a petal on
-    your beautiful narcissus flower.
-    """
+class BasePost(models.Model):
+    """A base model for the various post models to inherit from."""
 
     DRAFT = 0
     LIVE = 1
@@ -47,12 +43,10 @@ class Petal(models.Model):
         db_index=True,
     )
     author = models.ForeignKey('auth.User', db_index=True)
-    category = models.ForeignKey(Category, db_index=True)
-    language = models.CharField(
-        max_length=5,
-        choices=settings.LANGUAGES,
-        default=settings.LANGUAGE_CODE,
-    )
+    category = models.ForeignKey(Category, db_index=True, blank=True,
+                                 null=True)
+    language = models.CharField(max_length=5, choices=settings.LANGUAGES,
+                                default=settings.LANGUAGE_CODE)
     slug = models.SlugField('URL', unique_for_date='created_date')
     created_date = models.DateTimeField(auto_now_add=True)
     updated_date = models.DateTimeField(auto_now=True)
@@ -60,13 +54,13 @@ class Petal(models.Model):
     tags = TaggableManager()
 
     class Meta:
-        verbose_name = _(u'petal')
-        verbose_name_plural = _(u'petals')
+        verbose_name = _(u'base post')
+        verbose_name_plural = _(u'base posts')
         ordering = ('-created_date',)
 
 
-class UpdatePetal(Petal):
-    """A simple petal for quick text updates."""
+class UpdatePost(BasePost):
+    """A simple post for quick text updates."""
 
     message = models.CharField(max_length=300)
 
@@ -78,8 +72,8 @@ class UpdatePetal(Petal):
         return truncate_words(self.message, 10)
 
 
-class ArticlePetal(Petal):
-    """A petal for medium to long articles."""
+class ArticlePost(BasePost):
+    """A post for medium to long articles."""
 
     title = models.CharField(max_length=300)
     content = models.TextField()

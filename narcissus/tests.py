@@ -1,28 +1,29 @@
+from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 from django.test import TestCase
 from django.utils import simplejson as json
 
-from narcissus.models import UpdatePetal, ArticlePetal
+from narcissus.models import UpdatePost, ArticlePost
 
 
-class PetalModelTestCase(TestCase):
-    """Test the petal models, which are the various built-in content types."""
+class PostTestCase(TestCase):
+    """Test the built-in post models."""
 
-    def test_update_petal(self):
-        update = UpdatePetal(
+    def test_update(self):
+        update = UpdatePost(
             message="What I do, I do for the good of the universe. Something "
                     "you lost sight of thousands of years ago."
         )
         self.assertEqual(str(update), "What I do, I do for the good of the ...")
 
-    def test_article_petal(self):
+    def test_article(self):
         content = (
             "# War of the Green Lanterns\n\n"
             "As _Sinestro_ fights _Krona_, a green power ring comes to him, "
             "making _Sinestro_ a **Green Lantern** once more."
         )
 
-        article = ArticlePetal(
+        article = ArticlePost(
             title="Sinestro wields green power ring once again",
             content=content,
             markup="markdown"
@@ -39,26 +40,36 @@ class PetalModelTestCase(TestCase):
         self.assertEqual(article.get_teaser(), rendered)
 
 
-class GardenViewTestCase(TestCase):
+class DashboardViewTestCase(TestCase):
+
+    def setUp(self):
+        self.user = User.objects.create(username='Hal',
+                                        email='hjordan@oa.com')
 
     def test_home_view(self):
         """
         Requests for the home view should be successful and include the current
-        flowers in the context.
+        post types in the context.
         """
-        from narcissus.garden import flowers
+        from narcissus.dashboard import posttypes
 
         response = self.client.get(reverse('narcissus-home'))
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.context['flowers'], flowers)
+        self.assertEqual(response.context['posttypes'], posttypes)
 
     def test_new_update(self):
         """Test the creation of new updates using the Ajax interface."""
-        url = reverse('narcissus-new-petal', args=['update'])
+        url = reverse('narcissus-new-post', args=['update'])
         response = self.client.post(url, {
+            'status': 1,
             'message': "I'm a little teapot.",
+            'slug': 'teapot',
+            'language': 'en',
+            'author': self.user.pk,
+            'tags': '',
         }, HTTP_X_REQUESTED_WITH='XMLHttpRequest')
         self.assertEqual(response.status_code, 200)
         
+        import ipdb; ipdb.set_trace()
         data = json.loads(response.content)
         self.assertEqual(data['success'], True)

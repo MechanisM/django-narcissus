@@ -4,8 +4,8 @@ from django.conf import settings
 STATIC_URL = getattr(settings, 'NARCISSUS_STATIC_URL', settings.STATIC_URL +
                      'narcissus/')
 
-DEFAULT_FLOWERS = (
-    'narcissus.flowers.update.UpdateFlower',
-    'narcissus.flowers.article.ArticleFlower',
+DEFAULT_POSTTYPES = (
+    'narcissus.posttypes.update.UpdatePostType',
+    'narcissus.posttypes.article.ArticlePostType',
 )
-FLOWERS = getattr(settings, 'NARCISSUS_FLOWERS', DEFAULT_FLOWERS)
+POSTTYPES = getattr(settings, 'NARCISSUS_POSTTYPES', DEFAULT_POSTTYPES)

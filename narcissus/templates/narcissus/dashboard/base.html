@@ -4,7 +4,7 @@
     {% load url from future %}
     <meta charset="utf-8">
     <title>Narcissus</title>
-    <meta name="description" content="A dashboard for creating new petals for your lovely Narcissus garden.">
+    <meta name="description" content="A dashboard for creating new posts for your site.">
     
     <!-- HTML5 shim, for IE6-8 support of HTML elements -->
     <!--[if lt IE 9]>
@@ -31,9 +31,9 @@
         <div class="container">
           <a class="brand" href="{% url 'narcissus-home' %}">Narcissus</a>
           <ul class="nav">
-            <li class="active"><a href="#">Garden</a></li>
-            {% for name, flower in flowers.items %}
-              <li><a href="#{{ name }}">{{ flower.get_verbose_name_plural.title }}</a></li>
+            <li class="active"><a href="#">Dashboard</a></li>
+            {% for name, posttype in posttypes.items %}
+              <li><a href="#{{ name }}">{{ posttype.get_verbose_name_plural.title }}</a></li>
             {% endfor %}
           </ul>
           <p class="pull-right">
@@ -54,18 +54,18 @@
       
       <div class="alert-message block-message info fade in" data-alert="alert">
         <a class="close" href="#">×</a>
-        <p><strong>Welcome to the Garden!</strong> This is where you can go to post new content on your site.  It also collects all of your recent posts in one place for easy editing.  To view and edit only posts from a specific content type, click one of the links along the top of the page.</p>
+        <p><strong>Welcome to the dashboard!</strong> This is where you can go to post new content on your site.  It also collects all of your recent posts in one place for easy editing.  To view and edit only a specific type of post, click one of the links along the top of the page.</p>
       </div>
       
       <div class="page-header">
         <h1>
           Post something new
-          <small>Select a content type from the tabs below</small>
+          <small>Select a post type from the tabs below</small>
         </h1>
       </div>
       
       <ul class="tabs" data-tabs="tabs">
-        {% for name, flower in flowers.items %}
+        {% for name, posttype in posttypes.items %}
           <li{% if forloop.first %} class="active"{% endif %}>
             <a href="#{{ name }}">{{ name.title }}</a>
           </li>
@@ -73,9 +73,9 @@
       </ul>
 
       <div class="tab-content">
-        {% for name, flower in flowers.items %}
+        {% for name, posttype in posttypes.items %}
           <div id="{{ name }}"{% if forloop.first %} class="active"{% endif %}>
-            {% include flower.edit_template %}
+            {% include posttype.edit_template %}
           </div>
         {% endfor %}
       </div>

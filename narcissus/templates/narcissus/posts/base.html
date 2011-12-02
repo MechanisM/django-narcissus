@@ -2,8 +2,9 @@
 
 <h2>{% block content_title %}{% endblock %}</h2>
 
-{% with flower.form_instance as form %}
-<form class="form-stacked" id="{{ name }}-form" method="post" action="{% url 'narcissus-new-petal' name %}">
+{% with posttype.form_instance as form %}
+<form class="form-stacked" id="{{ name }}-form" method="post" action="{% url 'narcissus-new-post' name %}">
+  {% csrf_token %}
   
   <div class="row">
   
