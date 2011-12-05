@@ -16,7 +16,7 @@ class HomeView(TemplateView):
             # auto_id populated.
             form_class = posttype.get_form_class()
             posttype.form_instance = form_class(auto_id="id_%s_%%s" % name)
-        
+
         context = super(HomeView, self).get_context_data(**kwargs)
         context.update({
             'NARCISSUS_STATIC_URL': STATIC_URL,
@@ -29,14 +29,14 @@ class HomeView(TemplateView):
 class PostCreateView(AjaxFormMixin, BaseCreateView):
     http_method_names = ['post']
     template_name = "narcissus/dashboard/home.html"
-    
+
     def post(self, request, posttype_name):
-        self.posttype_name = posttype_name
         try:
-            posttype = posttypes[posttype_name]
+            self.posttype = posttypes[posttype_name]
         except KeyError:
             raise Http404
-        
-        self.form_class = posttype.form
-        
+
         return super(PostCreateView, self).post(request, posttype_name)
+
+    def get_form_class(self):
+        return self.posttype.form

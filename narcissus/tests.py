@@ -14,7 +14,8 @@ class PostTestCase(TestCase):
             message="What I do, I do for the good of the universe. Something "
                     "you lost sight of thousands of years ago."
         )
-        self.assertEqual(str(update), "What I do, I do for the good of the ...")
+        self.assertEqual(str(update),
+                         "What I do, I do for the good of the ...")
 
     def test_article(self):
         content = (
@@ -66,10 +67,9 @@ class DashboardViewTestCase(TestCase):
             'slug': 'teapot',
             'language': 'en',
             'author': self.user.pk,
-            'tags': '',
+            'tags': None,
         }, HTTP_X_REQUESTED_WITH='XMLHttpRequest')
         self.assertEqual(response.status_code, 200)
-        
-        import ipdb; ipdb.set_trace()
+
         data = json.loads(response.content)
         self.assertEqual(data['success'], True)
