@@ -47,6 +47,14 @@ class DashboardViewTestCase(TestCase):
         self.user = User.objects.create(username='Hal',
                                         email='hjordan@oa.com')
 
+        self.common_fields = {
+            'status': 1,
+            'slug': 'slug',
+            'language': 'en',
+            'author': self.user.pk,
+            'tags': None,
+        }
+
     def test_home_view(self):
         """
         Requests for the home view should be successful and include the current
@@ -61,15 +69,28 @@ class DashboardViewTestCase(TestCase):
     def test_new_update(self):
         """Test the creation of new updates using the Ajax interface."""
         url = reverse('narcissus-new-post', args=['update'])
-        response = self.client.post(url, {
-            'status': 1,
-            'message': "I'm a little teapot.",
-            'slug': 'teapot',
-            'language': 'en',
-            'author': self.user.pk,
-            'tags': None,
-        }, HTTP_X_REQUESTED_WITH='XMLHttpRequest')
+        response = self.client.post(url, dict(self.common_fields,
+            message="I'm a little teapot.",
+        ), HTTP_X_REQUESTED_WITH='XMLHttpRequest')
         self.assertEqual(response.status_code, 200)
 
         data = json.loads(response.content)
         self.assertEqual(data['success'], True)
+
+        post = UpdatePost.objects.latest('created_date')
+        self.assertEqual(post.message, "I'm a little teapot.")
+
+    def test_new_article(self):
+        url = reverse('narcissus-new-post', args=['article'])
+        response = self.client.post(url, dict(self.common_fields,
+            title='Joe needs some soda',
+            content="Joe's epic journey takes him through two worlds.",
+            markup='markdown',
+        ), HTTP_X_REQUESTED_WITH='XMLHttpRequest')
+        self.assertEqual(response.status_code, 200)
+
+        data = json.loads(response.content)
+        self.assertEqual(data['success'], True)
+
+        post = ArticlePost.objects.latest('created_date')
+        self.assertEqual(post.title, 'Joe needs some soda')

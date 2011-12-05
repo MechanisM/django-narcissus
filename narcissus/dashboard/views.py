@@ -4,7 +4,7 @@ from django.views.generic.edit import BaseCreateView
 
 from narcissus.dashboard import posttypes
 from narcissus.settings import STATIC_URL
-from narcissus.utils.views import AjaxFormMixin
+from narcissus.utils.views import AjaxModelFormMixin
 
 
 class HomeView(TemplateView):
@@ -26,7 +26,7 @@ class HomeView(TemplateView):
         return context
 
 
-class PostCreateView(AjaxFormMixin, BaseCreateView):
+class PostCreateView(AjaxModelFormMixin, BaseCreateView):
     http_method_names = ['post']
     template_name = "narcissus/dashboard/home.html"
 

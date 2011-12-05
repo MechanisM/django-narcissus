@@ -19,15 +19,19 @@ class AjaxMixin(object):
         return JSONResponse(context, **response_kwargs)
 
 
-class AjaxFormMixin(AjaxMixin):
-    """Appropriately handle forms for Ajax-only views."""
+class AjaxModelFormMixin(AjaxMixin):
+    """
+    Appropriately handle forms for Ajax-only views.  Designed to be used along
+    with the ModelFormMixin, or views like BaseCreateView.
+    """
 
     def form_valid(self, form):
         """Add any form errors, and flag success or failure."""
-        context = self.get_context_data()
+        self.object = form.save()
+        context = {}
         success = True
         if form.errors:
             context['errors'] = form.errors
             success = False
-        return super(AjaxFormMixin, self).render_to_response(context,
-                                                             success=success)
+        return super(AjaxModelFormMixin, self).render_to_response(
+            context, success=success)
