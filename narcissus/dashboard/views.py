@@ -12,7 +12,7 @@ class HomeView(TemplateView):
 
     def get_context_data(self, **kwargs):
         for name, posttype in posttypes.items():
-            # Annotate each flower with an instance of the form that has
+            # Annotate each posttype with an instance of the form that has
             # auto_id populated.
             form_class = posttype.get_form_class()
             posttype.form_instance = form_class(auto_id="id_%s_%%s" % name)

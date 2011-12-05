@@ -18,7 +18,7 @@
         <div class="clearfix">
           {{ form.slug.label_tag }}
           <div class="input-prepend">
-            <span class="add-on">/{{ name }}/2011/10/25/</span>
+            <span class="add-on">/{{ name }}/{% now "Y/m/d" %}/</span>
             <input class="span7" name="{{ form.slug.name }}" id="{{ form.slug.auto_id }}" type="text" />
           </div>
         </div>
@@ -42,13 +42,6 @@
           {{ form.status.label_tag }}
           <div class="input">
             {{ form.status }}
-          </div>
-        </div>
-
-        <div class="clearfix">
-          {{ form.category.label_tag }}
-          <div class="input">
-            {{ form.category }}
           </div>
         </div>
 

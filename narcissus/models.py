@@ -11,19 +11,6 @@ from django_markup.markup import formatter
 from taggit.managers import TaggableManager
 
 
-class Category(models.Model):
-    title = models.CharField(max_length=100)
-    slug = models.SlugField(unique=True)
-
-    class Meta:
-        verbose_name = _(u'category')
-        verbose_name_plural = _(u'categories')
-        ordering = ('title',)
-
-    def __unicode__(self):
-        return self.title
-
-
 class BasePost(models.Model):
     """A base model for the various post models to inherit from."""
 
@@ -43,8 +30,6 @@ class BasePost(models.Model):
         db_index=True,
     )
     author = models.ForeignKey('auth.User', db_index=True)
-    category = models.ForeignKey(Category, db_index=True, blank=True,
-                                 null=True)
     language = models.CharField(max_length=5, choices=settings.LANGUAGES,
                                 default=settings.LANGUAGE_CODE)
     slug = models.SlugField('URL', unique_for_date='created_date')
@@ -79,7 +64,7 @@ class ArticlePost(BasePost):
     content = models.TextField()
     description = models.TextField(blank=True, null=True)
     markup = MarkupField()
-    
+
     class Meta:
         verbose_name = _(u'article')
         verbose_name_plural = _(u'articles')
