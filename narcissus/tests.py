@@ -52,7 +52,7 @@ class DashboardViewTestCase(TestCase):
             'slug': 'slug',
             'language': 'en',
             'author': self.user.pk,
-            'tags': None,
+            'tags': '',
         }
 
     def test_home_view(self):

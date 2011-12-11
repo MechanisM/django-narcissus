@@ -1,4 +1,11 @@
+from django.forms import ModelForm
 from django.forms.models import modelform_factory
+
+
+class BasePostForm(ModelForm):
+    
+    class Meta:
+        exclude = ('author',)
 
 
 class BasePostType(object):
@@ -32,7 +39,7 @@ class BasePostType(object):
     @classmethod
     def get_form_class(cls):
         if cls.form is None:
-            return modelform_factory(cls.model)
+            return modelform_factory(cls.model, form=BasePostForm)
         else:
             return cls.form
     

@@ -36,7 +36,7 @@ class BasePost(models.Model):
     created_date = models.DateTimeField(auto_now_add=True)
     updated_date = models.DateTimeField(auto_now=True)
 
-    tags = TaggableManager()
+    tags = TaggableManager(blank=True)
 
     class Meta:
         verbose_name = _(u'base post')

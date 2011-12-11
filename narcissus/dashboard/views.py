@@ -39,4 +39,8 @@ class PostCreateView(AjaxModelFormMixin, BaseCreateView):
         return super(PostCreateView, self).post(request, posttype_name)
 
     def get_form_class(self):
-        return self.posttype.form
+        return self.posttype.get_form_class()
+    
+    def form_valid(self, form):
+        form.instance.author = self.request.user
+        return super(PostCreateView, self).form_valid(form)

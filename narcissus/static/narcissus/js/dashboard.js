@@ -1,6 +1,6 @@
 var DashboardForm = Class.$extend({
   
-  __init__ : function(posttype, form_selector) {
+  __init__ : function(posttype, form_selector, url_value) {
     var self = this;
     
     self.posttype = posttype;
@@ -10,8 +10,11 @@ var DashboardForm = Class.$extend({
       return false;
     });
     
-    $('.alert-message').alert();
-    $('.tabs').tabs();
+    if (url_value) {
+      $(url_value).bind('keyup keydown', function() {
+        self.prefill_url(this);
+      });
+    }
   },
   
   submit: function() {
@@ -49,6 +52,13 @@ var DashboardForm = Class.$extend({
   
   valid_form: function(data) {
     var self = this;
+    
+    $('<div class="alert-message success" data-alert="alert">' +
+      '<a class="close" href="#">×</a><p>Your post was successful!</p></div>')
+        .prependTo('#' + self.posttype + '-submit-post')
+        .fadeOut(4000, function() {
+          $(this).remove();
+        });
   },
   
   invalid_form: function(data) {
@@ -62,11 +72,23 @@ var DashboardForm = Class.$extend({
   },
   
   clear_errors: function(data) {
+    var self = this;
+    
     $('div.input, div.input-prepend').each(function() {
-      $(this).parent().removeClass('error');
-      $(this).children('input, textarea, select').removeClass('error')
+      $(self).parent().removeClass('error');
+      $(self).children('input, textarea, select').removeClass('error')
         .next('span.help-inline').remove();
     });
+  },
+  
+  prefill_url: function(element) {
+    var self = this;
+
+    $('#id_' + self.posttype + '_slug').val(URLify($(element).val(), 50));
   }
   
+});
+
+$(function() {
+  $('.tabs').tabs();
 });

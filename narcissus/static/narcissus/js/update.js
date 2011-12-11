@@ -1,21 +1,19 @@
 $(function() {
   var UpdateForm = DashboardForm.$extend({
 
-    __init__: function(posttype, form_selector) {
+    __init__: function(posttype, form_selector, url_value) {
       var self = this;
 
       $("#status_count").twipsy({
         placement: 'left'
       })
 
-      $("#id_update_message").bind('keyup, keydown', self.character_count)
-        .bind('keyup, keydown', self.prefill_url);
+      $(url_value).bind('keyup keydown', self.character_count);
 
-      self.$super(posttype, form_selector);
+      self.$super(posttype, form_selector, url_value);
     },
 
     character_count: function() {
-      console.log(this);
       var max = 300;
       var remaining = max - $(this).val().length;
       $('#status_count').text(remaining);
@@ -25,13 +23,9 @@ $(function() {
       } else {
         $('#status_count').addClass('error');
       }
-    },
-
-    prefill_url: function() {
-      $('#id_update_slug').val(URLify($(this).val(), 50));
     }
 
   });
 
-  var update_form = UpdateForm('update', '#update-form');
+  var update_form = UpdateForm('update', '#update-form', '#id_update_message');
 });
