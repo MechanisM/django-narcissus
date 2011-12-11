@@ -26,12 +26,8 @@ class AjaxModelFormMixin(AjaxMixin):
     """
 
     def form_valid(self, form):
-        """Add any form errors, and flag success or failure."""
         self.object = form.save()
-        context = {}
-        success = True
-        if form.errors:
-            context['errors'] = form.errors
-            success = False
-        return super(AjaxModelFormMixin, self).render_to_response(
-            context, success=success)
+        return self.render_to_response({}, success=True)
+
+    def form_invalid(self, form):
+        return self.render_to_response({'errors': form.errors}, success=False)
