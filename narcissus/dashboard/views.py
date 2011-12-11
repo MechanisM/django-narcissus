@@ -1,10 +1,10 @@
 from django.http import Http404
 from django.views.generic import TemplateView
-from django.views.generic.edit import BaseCreateView
+from django.views.generic.edit import BaseCreateView, BaseDeleteView
 
 from narcissus.dashboard import posttypes
 from narcissus.settings import STATIC_URL
-from narcissus.utils.views import AjaxModelFormMixin
+from narcissus.utils.views import AjaxModelFormMixin, AjaxDeletionMixin
 
 
 class HomeView(TemplateView):
@@ -27,8 +27,6 @@ class HomeView(TemplateView):
 
 
 class PostCreateView(AjaxModelFormMixin, BaseCreateView):
-    http_method_names = ['post']
-    template_name = "narcissus/dashboard/home.html"
 
     def post(self, request, posttype_name):
         try:
@@ -40,7 +38,21 @@ class PostCreateView(AjaxModelFormMixin, BaseCreateView):
 
     def get_form_class(self):
         return self.posttype.get_form_class()
-    
+
     def form_valid(self, form):
         form.instance.author = self.request.user
         return super(PostCreateView, self).form_valid(form)
+
+
+class PostDeleteView(AjaxDeletionMixin, BaseDeleteView):
+
+    def delete(self, request, posttype_name, *args, **kwargs):
+        try:
+            self.posttype = posttypes[posttype_name]
+        except KeyError:
+            raise Http404
+
+        self.queryset = self.posttype.model.objects.all()
+
+        return super(PostDeleteView, self).delete(request, posttype_name,
+                                                  *args, **kwargs)

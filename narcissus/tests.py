@@ -44,8 +44,11 @@ class PostTestCase(TestCase):
 class DashboardViewTestCase(TestCase):
 
     def setUp(self):
-        self.user = User.objects.create(username='Hal',
+        self.user = User.objects.create(username='hal',
                                         email='hjordan@oa.com')
+        self.user.set_password('greenlanternslight')
+        self.user.save()
+        self.client.login(username='hal', password='greenlanternslight')
 
         self.common_fields = {
             'status': 1,
@@ -54,6 +57,8 @@ class DashboardViewTestCase(TestCase):
             'author': self.user.pk,
             'tags': '',
         }
+
+        self.headers = {'HTTP_X_REQUESTED_WITH': 'XMLHttpRequest'}
 
     def test_home_view(self):
         """
@@ -71,7 +76,7 @@ class DashboardViewTestCase(TestCase):
         url = reverse('narcissus-new-post', args=['update'])
         response = self.client.post(url, dict(self.common_fields,
             message="I'm a little teapot.",
-        ), HTTP_X_REQUESTED_WITH='XMLHttpRequest')
+        ), **self.headers)
         self.assertEqual(response.status_code, 200)
 
         data = json.loads(response.content)
@@ -86,7 +91,7 @@ class DashboardViewTestCase(TestCase):
             title='Joe needs some soda',
             content="Joe's epic journey takes him through two worlds.",
             markup='markdown',
-        ), HTTP_X_REQUESTED_WITH='XMLHttpRequest')
+        ), **self.headers)
         self.assertEqual(response.status_code, 200)
 
         data = json.loads(response.content)
@@ -94,3 +99,21 @@ class DashboardViewTestCase(TestCase):
 
         post = ArticlePost.objects.latest('created_date')
         self.assertEqual(post.title, 'Joe needs some soda')
+
+    def test_delete(self):
+        self.assertEqual(UpdatePost.objects.count(), 0)
+
+        opts = dict(self.common_fields,
+            message="It's sonic screwdriver time.",
+            author=self.user,
+        )
+        del opts['tags']
+        UpdatePost.objects.create(**opts)
+        self.assertEqual(UpdatePost.objects.count(), 1)
+
+        url = reverse('narcissus-delete-post', args=['update', '1'])
+
+        response = self.client.delete(url, **self.headers)
+        self.assertEqual(response.status_code, 200)
+
+        self.assertEqual(UpdatePost.objects.count(), 0)

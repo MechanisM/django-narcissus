@@ -8,6 +8,7 @@ class AjaxMixin(object):
     A mixin that can be used for Ajax-only views.  It checks to make sure that
     the request is Ajax and returns a JSON response.
     """
+    http_method_names = ['post']
 
     def dispatch(self, request, *args, **kwargs):
         if not request.is_ajax():
@@ -31,3 +32,13 @@ class AjaxModelFormMixin(AjaxMixin):
 
     def form_invalid(self, form):
         return self.render_to_response({'errors': form.errors}, success=False)
+
+
+class AjaxDeletionMixin(AjaxMixin):
+    """Appropriately handle delete requests for Ajax-only views."""
+    http_method_names = ['post', 'delete']
+
+    def delete(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        self.object.delete()
+        return self.render_to_response({}, success=True)
