@@ -12,7 +12,9 @@ from taggit.managers import TaggableManager
 
 
 class BasePost(models.Model):
-    """A base model for the various post models to inherit from."""
+    """
+    The core post model that the various type-specific post models extend.
+    """
 
     DRAFT = 0
     LIVE = 1
@@ -24,6 +26,7 @@ class BasePost(models.Model):
         (CLOSED, _(u'Closed')),
     )
 
+    posttype = models.CharField(max_length="100")
     status = models.IntegerField(
         choices=STATUS_CHOICES,
         default=LIVE,
@@ -54,7 +57,10 @@ class UpdatePost(BasePost):
         verbose_name_plural = _(u'updates')
 
     def __unicode__(self):
-        return truncate_words(self.message, 10)
+        return truncate_words(self.message, 3)
+
+    def get_teaser(self):
+        return self.message
 
 
 class ArticlePost(BasePost):
@@ -80,7 +86,7 @@ class ArticlePost(BasePost):
     def word_count(self):
         return len(strip_tags(self.rendered_content).split())
 
-    def get_teaser(self, truncate=75):
+    def get_teaser(self, truncate=30):
         if self.description:
             teaser = formatter(self.description, filter_name=self.markup)
         else:

@@ -65,7 +65,7 @@ class DashboardViewTestCase(TestCase):
         Requests for the home view should be successful and include the current
         post types in the context.
         """
-        from narcissus.dashboard import posttypes
+        from narcissus.posttypes import posttypes
 
         response = self.client.get(reverse('narcissus-home'))
         self.assertEqual(response.status_code, 200)

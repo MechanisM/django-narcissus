@@ -3,7 +3,8 @@ from django.http import Http404
 from django.views.generic import TemplateView
 from django.views.generic.edit import BaseCreateView, BaseDeleteView
 
-from narcissus.dashboard import posttypes
+from narcissus.posttypes import posttypes
+from narcissus.models import BasePost
 from narcissus.settings import STATIC_URL
 from narcissus.utils.views import (LoginRequiredMixin, AjaxModelFormMixin,
                                    AjaxDeletionMixin)
@@ -19,12 +20,19 @@ class HomeView(LoginRequiredMixin, TemplateView):
             form_class = posttype.get_form_class()
             posttype.form_instance = form_class(auto_id="id_%s_%%s" % name)
 
+        posts = []
+        for base_post in BasePost.objects.all():
+            # Get the actual type-specific post object using the multi-table
+            # child accessor
+            posts.append(getattr(base_post, base_post.posttype))
+
         context = super(HomeView, self).get_context_data(**kwargs)
         context.update({
             'NARCISSUS_STATIC_URL': STATIC_URL,
             'LOGOUT_URL': settings.LOGOUT_URL,
             'user': self.request.user,
             'posttypes': posttypes,
+            'posts': posts,
         })
         return context
 
@@ -44,6 +52,11 @@ class PostCreateView(LoginRequiredMixin, AjaxModelFormMixin, BaseCreateView):
 
     def form_valid(self, form):
         form.instance.author = self.request.user
+
+        # Set the posttype to the module_name, which is the related_name for
+        # traversing from the parent to child object in multi-table inheritance
+        form.instance.posttype = form.instance._meta.module_name
+
         return super(PostCreateView, self).form_valid(form)
 
 
