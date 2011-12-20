@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.conf.urls.defaults import patterns, include, url
 
 from narcissus.dashboard.views import HomeView, PostCreateView, PostDeleteView
@@ -12,7 +13,8 @@ urlpatterns = patterns('',
         name='narcissus-login'),
     url(r'^logout/$', 'django.contrib.auth.views.logout',
         kwargs={'template_name': 'narcissus/dashboard/logged_out.html',
-                'extra_context': {'NARCISSUS_STATIC_URL': STATIC_URL}},
+                'extra_context': {'NARCISSUS_STATIC_URL': STATIC_URL,
+                                  'LOGIN_URL': settings.LOGIN_URL}},
         name='narcissus-logout'),
     url(r'^new/(?P<posttype_name>[\w-]+)/$', PostCreateView.as_view(),
         name='narcissus-new-post'),
