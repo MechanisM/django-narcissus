@@ -1,4 +1,56 @@
 {% extends "narcissus/dashboard/base.html" %}
 
-{# Once the dashboard is further along, homepage-specific markup from the base
-   template will be moved here. #}
+{% block content %}
+  <div class="alert-message block-message info fade in" data-alert="alert">
+    <a class="close" href="#">×</a>
+    <p><strong>Welcome to the dashboard!</strong> This is where you can go to post new content on your site.  It also collects all of your recent posts in one place for easy editing.  To view and edit only a specific type of post, click one of the links along the top of the page.</p>
+  </div>
+
+  <div class="page-header">
+    <h1>
+      Post something new
+      <small>Select a post type from the tabs below</small>
+    </h1>
+  </div>
+
+  <ul class="tabs" data-tabs="tabs">
+    {% for name, posttype in posttypes.items %}
+      <li{% if forloop.first %} class="active"{% endif %}>
+        <a href="#{{ name }}">{{ name.title }}</a>
+      </li>
+    {% endfor %}
+  </ul>
+
+  <div class="tab-content">
+    {% for name, posttype in posttypes.items %}
+      <div id="{{ name }}" class="tab-pane{% if forloop.first %} active{% endif %}">
+        {% include posttype.edit_template %}
+      </div>
+    {% endfor %}
+  </div>
+
+  <div class="page-header">
+    <h1>
+      Recent activity
+      <small>Here's what you've been up to lately</small>
+    </h1>
+  </div>
+
+  <div class="row">
+    <div class="span-one-third">
+      <h2>Heading</h2>
+      <p>Etiam porta sem malesuada magna mollis euismod. Integer posuere erat a ante venenatis dapibus posuere velit aliquet. Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum. Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit.</p>
+      <p><a class="btn" href="#">View details &raquo;</a></p>
+    </div>
+    <div class="span-one-third">
+      <h2>Heading</h2>
+       <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
+      <p><a class="btn" href="#">View details &raquo;</a></p>
+   </div>
+    <div class="span-one-third">
+      <h2>Heading</h2>
+      <p>Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vestibulum id ligula porta felis euismod semper. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</p>
+      <p><a class="btn" href="#">View details &raquo;</a></p>
+    </div>
+  </div>
+{% endblock %}

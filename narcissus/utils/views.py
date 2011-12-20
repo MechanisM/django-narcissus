@@ -1,6 +1,16 @@
+from django.contrib.auth.decorators import login_required
 from django.http import Http404
+from django.utils.decorators import method_decorator
 
 from narcissus.utils.http import JSONResponse
+
+
+class LoginRequiredMixin(object):
+    """A simple mixin that just applies the login_required decorator"""
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(LoginRequiredMixin, self).dispatch(*args, **kwargs)
 
 
 class AjaxMixin(object):

@@ -88,7 +88,3 @@ var DashboardForm = Class.$extend({
   }
   
 });
-
-$(function() {
-  $('.tabs').tabs();
-});

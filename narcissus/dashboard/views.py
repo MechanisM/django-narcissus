@@ -4,10 +4,11 @@ from django.views.generic.edit import BaseCreateView, BaseDeleteView
 
 from narcissus.dashboard import posttypes
 from narcissus.settings import STATIC_URL
-from narcissus.utils.views import AjaxModelFormMixin, AjaxDeletionMixin
+from narcissus.utils.views import (LoginRequiredMixin, AjaxModelFormMixin,
+                                   AjaxDeletionMixin)
 
 
-class HomeView(TemplateView):
+class HomeView(LoginRequiredMixin, TemplateView):
     template_name = "narcissus/dashboard/home.html"
 
     def get_context_data(self, **kwargs):
@@ -26,7 +27,7 @@ class HomeView(TemplateView):
         return context
 
 
-class PostCreateView(AjaxModelFormMixin, BaseCreateView):
+class PostCreateView(LoginRequiredMixin, AjaxModelFormMixin, BaseCreateView):
 
     def post(self, request, posttype_name):
         try:
@@ -44,7 +45,7 @@ class PostCreateView(AjaxModelFormMixin, BaseCreateView):
         return super(PostCreateView, self).form_valid(form)
 
 
-class PostDeleteView(AjaxDeletionMixin, BaseDeleteView):
+class PostDeleteView(LoginRequiredMixin, AjaxDeletionMixin, BaseDeleteView):
 
     def delete(self, request, posttype_name, *args, **kwargs):
         try:

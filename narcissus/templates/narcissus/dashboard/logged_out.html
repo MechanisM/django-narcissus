@@ -1,0 +1,27 @@
+{% extends "narcissus/dashboard/base.html" %}
+
+{% block navigation %}{% endblock %}
+
+{% block content %}
+  <div class="page-header">
+    <h1>Logged out</h1>
+  </div>
+  
+  <div class="row">
+    <div class="span4">&nbsp;</div>
+    <div class="span8">
+      
+      <div class="alert-message block-message success">
+        <p>
+          <strong>You were successfully logged out of the Narcissus dashboard.</strong>
+          If you didn't intend to log out, or you want to log in as a different user, you can use the button below to return to the login page.
+        </p>
+        <div class="alert-actions">
+          <a class="btn large" href="{% url narcissus-login %}">Login again</a>
+        </div>
+      </div>
+    
+    </div>
+    <div class="span4">&nbsp;</div>
+  </div>
+{% endblock %}
